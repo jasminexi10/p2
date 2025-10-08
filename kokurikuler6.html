@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tugas Kokurikuler Kelas XI-10</title>
+<style>
+  :root{
+    --navy:#0a2240; --navy-2:#123463; --ink:#111418; --muted:#6b7280;
+    --gold:#e9c656; --bg:#f6f7fb; --card:#ffffff; --border:#e6e8ee;
+    --radius:16px; --shadow:0 14px 36px rgba(10,34,64,.10);
+  }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:ui-serif,Georgia,serif}
+
+  /* HEADER */
+  header{
+    position:sticky; top:0; z-index:60;
+    background:linear-gradient(180deg,var(--navy),var(--navy-2));
+    color:#fff; border-bottom:1px solid rgba(255,255,255,.12);
+  }
+  .bar{max-width:1100px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+  .title{margin:0;font:700 18px/1.2 ui-serif,Georgia,serif;letter-spacing:.3px}
+  .hamb{width:44px;height:44px;display:grid;place-items:center;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);cursor:pointer}
+  .hamb span{display:block;width:20px;height:2px;background:#fff;position:relative}
+  .hamb span::before,.hamb span::after{content:"";position:absolute;left:0;width:20px;height:2px;background:#fff}
+  .hamb span::before{top:-6px}.hamb span::after{top:6px}
+
+  /* DRAWER (menu ☰) */
+  .drawer{position:fixed;inset:0;display:none}
+  .drawer.show{display:block}
+  .drawer .mask{position:absolute;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(2px)}
+  .drawer .panel{
+    position:absolute;right:0;top:0;height:100%;width:min(86%,320px);
+    background:linear-gradient(180deg,var(--navy-2),var(--navy));color:#fff;padding:18px;
+    border-left:1px solid rgba(255,255,255,.15);box-shadow:var(--shadow);animation:slide .22s ease-out
+  }
+  @keyframes slide{from{transform:translateX(18px);opacity:.7}to{transform:none;opacity:1}}
+  .panel h3{margin:4px 0 12px;font:700 16px/1.2 ui-serif,Georgia,serif;letter-spacing:.2px}
+  .panel a{
+    display:block;padding:12px;border-radius:12px;color:#fff;background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.14);margin-bottom:10px;text-decoration:none
+  }
+  .panel a.active{background:rgba(233,198,86,.18);border-color:rgba(233,198,86,.5)}
+  .panel a:hover{background:rgba(255,255,255,.12)}
+
+  /* HERO (BERANDA) */
+  .hero{
+    position:relative; color:#fff; isolation:isolate;
+    background:radial-gradient(1200px 600px at 80% -10%, rgba(255,255,255,.08), transparent 60%),
+               linear-gradient(180deg, var(--navy-2), #173e77);
+  }
+  .hero::after{ /* dekor garis halus */
+    content:""; position:absolute; inset:auto 0 0 0; height:2px;
+    background:linear-gradient(90deg, transparent, rgba(233,198,86,.7), transparent);
+    opacity:.9;
+  }
+  .hero .wrap{max-width:1100px;margin:0 auto;padding:48px 18px 44px}
+  .pill{display:inline-block;background:rgba(233,198,86,.18);border:1px solid rgba(233,198,86,.5);padding:6px 10px;border-radius:999px;font-size:12px}
+  .hero h2{margin:12px 0 8px;font-size:clamp(26px,4.2vw,40px);line-height:1.2}
+  .hero p{opacity:.9;margin:0 0 16px;max-width:720px}
+  .cta{display:inline-flex;gap:10px;align-items:center;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;cursor:pointer}
+  .cta:active{transform:translateY(1px)}
+
+  /* STAGE (SLIDE AREA) */
+  .stage{max-width:1100px;margin:0 auto;padding:22px 18px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .p{padding:18px}
+  .muted{color:var(--muted)}
+  .hidden{display:none}
+
+  .slides{position:relative;min-height:260px}
+  .slide{
+    position:absolute; inset:0; opacity:0; transform:translateY(14px); transition:opacity .24s ease, transform .24s ease;
+    pointer-events:none;
+  }
+  .slide.active{opacity:1; transform:none; pointer-events:auto}
+  .slide h3{margin:0 0 6px;font:700 20px/1.25 ui-serif,Georgia,serif;color:var(--navy-2)}
+  .placeholder{
+    background:#f4f7ff;border:2px dashed #c6d0ff;border-radius:12px;color:#3b496a;
+    display:grid;place-items:center;min-height:160px;padding:18px;text-align:center
+  }
+
+  footer{padding:28px 18px;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="bar">
+    <h1 class="title">Tugas Kokurikuler Kelas XI-10</h1>
+    <button class="hamb" id="openNav" aria-label="Buka menu"><span></span></button>
+  </div>
+
+  <!-- DRAWER MENU -->
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="mask" id="mask"></div>
+    <nav class="panel" aria-label="Pilih Mapel">
+      <h3>Pilih Mapel</h3>
+      <a href="#inggris"   data-target="inggris"   class="active">Bahasa Inggris</a>
+      <a href="#indonesia" data-target="indonesia">Bahasa Indonesia</a>
+      <a href="#pjok"      data-target="pjok">PJOK</a>
+      <a href="#pkwu"      data-target="pkwu">PKWU</a>
+    </nav>
+  </div>
+</header>
+
+<!-- BERANDA (HANYA INI YANG MUNCUL SAAT LOAD) -->
+<section class="hero" id="home">
+  <div class="wrap">
+    <span class="pill">Semester berjalan</span>
+    <h2>kokurikuler XI-10</h2>
+    <p><em>Menampilkan hasil kolaborasi lintas mata pelajaran:</em> <b>Bahasa Inggris</b>, <b>Bahasa Indonesia</b>, <b>PJOK</b>, dan <b>PKWU</b>.
+       Pilih mapel dari menu <b>☰</b> di kanan atas untuk melihat informasinya.</p>
+    <button class="cta" id="openFromHero" aria-label="Lihat Mapel">Lihat Mapel ☰</button>
+  </div>
+</section>
+
+<!-- STAGE (TERSEMBUNYI SAMPAI MAPEL DIPILIH) -->
+<main class="stage hidden" id="stage">
+  <div class="card">
+    <div class="p">
+      <div class="slides" id="slides">
+        <!-- SLIDE: BAHASA INGGRIS -->
+        <section class="slide" id="slide-inggris" aria-label="Bahasa Inggris">
+          <h3>Bahasa Inggris</h3>
+          <p class="muted">Materi/video/pengumuman kelas.</p>
+          <div class="placeholder">
+            <!-- # Masukkan informasi / video Bahasa Inggris di sini -->
+          </div>
+        </section>
+
+        <!-- SLIDE: BAHASA INDONESIA -->
+        <section class="slide" id="slide-indonesia" aria-label="Bahasa Indonesia">
+          <h3>Bahasa Indonesia</h3>
+          <p class="muted">Materi/video/pengumuman kelas.</p>
+          <div class="placeholder">
+            <!-- # Masukkan informasi / video Bahasa Indonesia di sini -->
+          </div>
+        </section>
+
+        <!-- SLIDE: PJOK -->
+        <section class="slide" id="slide-pjok" aria-label="PJOK">
+          <h3>PJOK</h3>
+          <p class="muted">Materi/video/pengumuman kelas.</p>
+          <div class="placeholder">
+            <!-- # Masukkan informasi / video PJOK di sini -->
+          </div>
+        </section>
+
+        <!-- SLIDE: PKWU -->
+        <section class="slide" id="slide-pkwu" aria-label="PKWU">
+          <h3>PKWU</h3>
+          <p class="muted">Materi/video/pengumuman kelas.</p>
+          <div class="placeholder">
+            <!-- # Masukkan informasi / video PKWU di sini -->
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>© 2025 Kokurikuler XI-10</footer>
+
+<script>
+  // Drawer
+  const drawer = document.getElementById('drawer');
+  const mask   = document.getElementById('mask');
+  const openBtn= document.getElementById('openNav');
+  const openHero = document.getElementById('openFromHero');
+  const links  = drawer.querySelectorAll('a[data-target]');
+
+  function toggleDrawer(show){
+    drawer.classList[show?'add':'remove']('show');
+    drawer.setAttribute('aria-hidden', show ? 'false' : 'true');
+  }
+  openBtn.addEventListener('click', ()=> toggleDrawer(!drawer.classList.contains('show')));
+  openHero.addEventListener('click', ()=> toggleDrawer(true));
+  mask.addEventListener('click', ()=> toggleDrawer(false));
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') toggleDrawer(false) });
+
+  // Slides
+  const stage = document.getElementById('stage');
+  const slides = {
+    inggris  : document.getElementById('slide-inggris'),
+    indonesia: document.getElementById('slide-indonesia'),
+    pjok     : document.getElementById('slide-pjok'),
+    pkwu     : document.getElementById('slide-pkwu'),
+  };
+  let current = null;
+
+  function activate(name){
+    // Tampilkan area stage pertama kali
+    if(stage.classList.contains('hidden')) stage.classList.remove('hidden');
+    // Set active slide
+    Object.entries(slides).forEach(([k,el])=>{
+      el.classList.toggle('active', k===name);
+    });
+    current = name;
+    // Update link aktif
+    links.forEach(a=>a.classList.toggle('active', a.dataset.target===name));
+    // Tutup drawer
+    toggleDrawer(false);
+    // Scroll ke stage
+    stage.scrollIntoView({behavior:'smooth', block:'start'});
+    // Update hash (opsional)
+    history.replaceState(null, '', '#'+name);
+  }
+
+  links.forEach(a=>{
+    a.addEventListener('click', e=>{
+      e.preventDefault();
+      activate(a.dataset.target);
+    });
+  });
+
+  // Jika buka dengan hash (contoh: index.html#pjok)
+  const hash = location.hash.replace('#','');
+  if (['inggris','indonesia','pjok','pkwu'].includes(hash)) {
+    activate(hash);
+  }
+</script>
+</body>
+</html>
